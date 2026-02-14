@@ -1,62 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Travel Destination Finder</title>
+<meta charset="UTF-8">
+<title>Smart Destini</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css"/>
 
-    <!-- Leaflet Map Library -->
-    <link rel="stylesheet"
-        href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<style>
+body{
+    font-family:Arial;
+    background:#0f172a;
+    color:white;
+    padding:30px;
+}
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+.card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:14px;
+    max-width:800px;
+    margin:auto;
+}
 
-    <!-- Routing Plugin -->
-    <link rel="stylesheet"
-        href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css"/>
+input,button{
+    padding:12px;
+    border-radius:8px;
+    border:none;
+    margin:6px;
+}
 
-    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+button{
+    background:#f97316;
+    color:white;
+    cursor:pointer;
+}
+
+.resultCard{
+    background:#334155;
+    padding:15px;
+    border-radius:12px;
+    margin-top:15px;
+}
+
+img{
+    width:100%;
+    border-radius:12px;
+}
+
+#map{
+    height:400px;
+    margin-top:20px;
+    border-radius:12px;
+}
+</style>
 </head>
 
 <body>
 
-<h1>Travel Destination Finder</h1>
+<div class="card">
 
-<div class="box">
+<h2>🌍 Smart Destini</h2>
 
-    <h3>Find Destination by Budget</h3>
+<input id="budget" type="number" placeholder="Total Budget">
+<input id="days" type="number" placeholder="Days">
 
-    <label>Budget:</label>
-    <input type="number" id="budget">
+<button onclick="suggest()">Generate My Escape</button>
 
-    <label>Days:</label>
-    <input type="number" id="days">
-
-    <button onclick="suggest()">Find Destinations</button>
-
-    <ul id="result"></ul>
-
-</div>
+<div id="suggestion"></div>
 
 <hr>
 
-<div class="box">
+<h3>Route Planner</h3>
 
-    <h3>Route Map</h3>
+<input id="start" placeholder="Start City">
+<input id="end" placeholder="Destination">
 
-    <label>Start Location:</label>
-    <input type="text" id="start">
+<button onclick="showRoute()">Show Route</button>
 
-    <label>Destination:</label>
-    <input type="text" id="end">
+<div id="km"></div>
 
-    <button onclick="showRoute()">Show Route</button>
+<div id="map"></div>
 
 </div>
 
-<div id="map" style="height: 400px; margin: 20px;"></div>
-
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 <script src="script.js"></script>
 
 </body>
 </html>
+

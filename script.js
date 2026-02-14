@@ -1,103 +1,89 @@
-// =======================
-// DESTINATION SUGGESTION
-// =======================
+document.addEventListener("DOMContentLoaded", function () {
 
-async function suggest() {
+// ================= MAP =================
 
-    const budget = Number(document.getElementById("budget").value);
-    const days = Number(document.getElementById("days").value);
-    const resultBox = document.getElementById("result");
+let map = L.map('map').setView([20,77],5);
 
-    resultBox.innerHTML = "Loading...";
-
-    try {
-        const response = await fetch("./destinations.json");
-        const db = await response.json();
-
-        const matches = db.filter(p =>
-            budget >= p.minBudget &&
-            budget <= p.maxBudget &&
-            days >= p.days
-        );
-
-        resultBox.innerHTML = "";
-
-        if (matches.length === 0) {
-            resultBox.innerHTML = "<li>No matching destinations</li>";
-            return;
-        }
-
-        matches.forEach(p => {
-            const li = document.createElement("li");
-            li.textContent = `${p.name} — ${p.country} — ${p.type}`;
-            resultBox.appendChild(li);
-        });
-
-    } catch (err) {
-        console.error(err);
-        resultBox.innerHTML = "Database load error";
-    }
-}
-
-
-// =======================
-// MAP + ROUTING
-// =======================
-
-let map = L.map('map').setView([20, 77], 5);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data © OpenStreetMap'
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+ attribution:'Map © OSM'
 }).addTo(map);
 
 let routeControl;
 
 
-// =======================
-// ROUTE FUNCTION
-// =======================
+// ================= SUGGEST =================
 
-async function showRoute() {
+window.suggest = async function(){
+
+    const budget = Number(document.getElementById("budget").value);
+    const days = Number(document.getElementById("days").value);
+    const box = document.getElementById("suggestion");
+
+    const res = await fetch("./destinations.json");
+    const db = await res.json();
+
+    const match = db.find(d => budget>=d.min && budget<=d.max && days>=d.days);
+
+    if(!match){
+        box.innerHTML="No match found";
+        return;
+    }
+
+    box.innerHTML = `
+    <div class="resultCard">
+        <img src="${match.img}">
+        <h3>${match.name}, ${match.country}</h3>
+        <button onclick="useDest('${match.name}')">Use For Route</button>
+    </div>`;
+}
+
+
+// ================= USE DEST =================
+
+window.useDest = function(name){
+    document.getElementById("end").value = name;
+}
+
+
+// ================= ROUTE =================
+
+window.showRoute = async function(){
 
     const start = document.getElementById("start").value;
     const end = document.getElementById("end").value;
 
-    if (!start || !end) {
-        alert("Enter both locations");
+    const s = await geo(start);
+    const e = await geo(end);
+
+    if(!s || !e){
+        alert("Place not found");
         return;
     }
 
-    const s = await geocode(start);
-    const e = await geocode(end);
-
-    if (!s || !e) {
-        alert("Place not found — try bigger city");
-        return;
-    }
-
-    if (routeControl) {
+    if(routeControl){
         map.removeControl(routeControl);
     }
 
     routeControl = L.Routing.control({
-        waypoints: [
-            L.latLng(s.lat, s.lon),
-            L.latLng(e.lat, e.lon)
+        waypoints:[
+            L.latLng(s.lat,s.lon),
+            L.latLng(e.lat,e.lon)
         ]
-    }).addTo(map);
+    })
+    .on("routesfound", ev=>{
+        const km=(ev.routes[0].summary.totalDistance/1000).toFixed(1);
+        document.getElementById("km").innerHTML="Distance: "+km+" km";
+    })
+    .addTo(map);
 }
 
 
-// =======================
-// GEOCODER
-// =======================
+// ================= GEOCODE =================
 
-async function geocode(place) {
-
-    const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${place}`
-    );
-
-    const data = await res.json();
-    return data[0];
+async function geo(q){
+    const r=await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${q}`);
+    const d=await r.json();
+    return d[0];
 }
+
+});
