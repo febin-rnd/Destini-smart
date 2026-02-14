@@ -1,37 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Travel Suggestor</title>
+    <title>Travel Destination Finder</title>
+
     <link rel="stylesheet" href="style.css">
+
+    <!-- Leaflet Map Library -->
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Routing Plugin -->
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css"/>
+
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Travel Suggestor</h1>
-        <p>Enter your details to find a destination:</p>
-        
-        <div class="input-group">
-            <label>Total Budget ($)</label>
-            <input type="number" id="totalBudget" placeholder="e.g. 1000">
-        </div>
 
-        <div class="input-group">
-            <label>Number of Days</label>
-            <input type="number" id="totalDays" placeholder="e.g. 7">
-        </div>
+<h1>Travel Destination Finder</h1>
 
-        <button onclick="suggestTrip()">Find My Trip</button>
+<div class="box">
 
-        <div id="result-container" class="hidden">
-            <h3>We Recommend:</h3>
-            <div id="result-card">
-                <h2 id="destination-name"></h2>
-                <p id="destination-info"></p>
-                <p><strong>Estimated Daily Cost:</strong> $<span id="daily-cost"></span></p>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
+    <h3>Find Destination by Budget</h3>
+
+    <label>Budget:</label>
+    <input type="number" id="budget">
+
+    <label>Days:</label>
+    <input type="number" id="days">
+
+    <button onclick="suggest()">Find Destinations</button>
+
+    <ul id="result"></ul>
+
+</div>
+
+<hr>
+
+<div class="box">
+
+    <h3>Route Map</h3>
+
+    <label>Start Location:</label>
+    <input type="text" id="start">
+
+    <label>Destination:</label>
+    <input type="text" id="end">
+
+    <button onclick="showRoute()">Show Route</button>
+
+</div>
+
+<div id="map" style="height: 400px; margin: 20px;"></div>
+
+<script src="script.js"></script>
+
 </body>
 </html>

@@ -1,0 +1,39 @@
+[
+  {"name":"Munnar","country":"India","minBudget":4000,"maxBudget":12000,"days":2,"type":"hill"},
+  {"name":"Ooty","country":"India","minBudget":5000,"maxBudget":14000,"days":3,"type":"hill"},
+  {"name":"Coorg","country":"India","minBudget":6000,"maxBudget":15000,"days":3,"type":"hill"},
+  {"name":"Kodaikanal","country":"India","minBudget":5000,"maxBudget":14000,"days":3,"type":"hill"},
+  {"name":"Wayanad","country":"India","minBudget":4500,"maxBudget":13000,"days":2,"type":"nature"},
+
+  {"name":"Goa","country":"India","minBudget":8000,"maxBudget":25000,"days":4,"type":"beach"},
+  {"name":"Gokarna","country":"India","minBudget":7000,"maxBudget":18000,"days":3,"type":"beach"},
+  {"name":"Pondicherry","country":"India","minBudget":9000,"maxBudget":20000,"days":3,"type":"beach"},
+  {"name":"Andaman","country":"India","minBudget":25000,"maxBudget":60000,"days":5,"type":"beach"},
+
+  {"name":"Jaipur","country":"India","minBudget":7000,"maxBudget":20000,"days":3,"type":"culture"},
+  {"name":"Udaipur","country":"India","minBudget":9000,"maxBudget":24000,"days":3,"type":"culture"},
+  {"name":"Varanasi","country":"India","minBudget":6000,"maxBudget":16000,"days":2,"type":"culture"},
+  {"name":"Hampi","country":"India","minBudget":6500,"maxBudget":17000,"days":2,"type":"heritage"},
+
+  {"name":"Manali","country":"India","minBudget":12000,"maxBudget":30000,"days":4,"type":"hill"},
+  {"name":"Leh","country":"India","minBudget":20000,"maxBudget":45000,"days":5,"type":"adventure"},
+  {"name":"Rishikesh","country":"India","minBudget":7000,"maxBudget":18000,"days":3,"type":"adventure"},
+
+  {"name":"Nepal","country":"Nepal","minBudget":18000,"maxBudget":40000,"days":5,"type":"mountain"},
+  {"name":"Sri Lanka","country":"Sri Lanka","minBudget":22000,"maxBudget":50000,"days":5,"type":"island"},
+  {"name":"Maldives","country":"Maldives","minBudget":70000,"maxBudget":160000,"days":4,"type":"luxury"},
+
+  {"name":"Bangkok","country":"Thailand","minBudget":30000,"maxBudget":70000,"days":4,"type":"city"},
+  {"name":"Phuket","country":"Thailand","minBudget":35000,"maxBudget":80000,"days":5,"type":"beach"},
+  {"name":"Bali","country":"Indonesia","minBudget":45000,"maxBudget":90000,"days":5,"type":"beach"},
+  {"name":"Kuala Lumpur","country":"Malaysia","minBudget":35000,"maxBudget":75000,"days":4,"type":"city"},
+  {"name":"Singapore","country":"Singapore","minBudget":60000,"maxBudget":120000,"days":4,"type":"city"},
+
+  {"name":"Dubai","country":"UAE","minBudget":60000,"maxBudget":120000,"days":4,"type":"city"},
+  {"name":"Abu Dhabi","country":"UAE","minBudget":65000,"maxBudget":130000,"days":4,"type":"city"},
+
+  {"name":"Tokyo","country":"Japan","minBudget":120000,"maxBudget":220000,"days":6,"type":"city"},
+  {"name":"Paris","country":"France","minBudget":140000,"maxBudget":250000,"days":6,"type":"culture"},
+  {"name":"Rome","country":"Italy","minBudget":130000,"maxBudget":230000,"days":6,"type":"culture"},
+  {"name":"New York","country":"USA","minBudget":150000,"maxBudget":260000,"days":6,"type":"city"}
+]

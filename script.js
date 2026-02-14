@@ -1,43 +1,103 @@
-function suggestTrip() {
-    // 1. Get values from the user
-    const totalBudget = parseFloat(document.getElementById('totalBudget').value);
-    const totalDays = parseInt(document.getElementById('totalDays').value);
-    
-    // 2. Simple validation
-    if (!totalBudget || !totalDays || totalBudget <= 0 || totalDays <= 0) {
-        alert("Please enter valid numbers!");
+// =======================
+// DESTINATION SUGGESTION
+// =======================
+
+async function suggest() {
+
+    const budget = Number(document.getElementById("budget").value);
+    const days = Number(document.getElementById("days").value);
+    const resultBox = document.getElementById("result");
+
+    resultBox.innerHTML = "Loading...";
+
+    try {
+        const response = await fetch("./destinations.json");
+        const db = await response.json();
+
+        const matches = db.filter(p =>
+            budget >= p.minBudget &&
+            budget <= p.maxBudget &&
+            days >= p.days
+        );
+
+        resultBox.innerHTML = "";
+
+        if (matches.length === 0) {
+            resultBox.innerHTML = "<li>No matching destinations</li>";
+            return;
+        }
+
+        matches.forEach(p => {
+            const li = document.createElement("li");
+            li.textContent = `${p.name} — ${p.country} — ${p.type}`;
+            resultBox.appendChild(li);
+        });
+
+    } catch (err) {
+        console.error(err);
+        resultBox.innerHTML = "Database load error";
+    }
+}
+
+
+// =======================
+// MAP + ROUTING
+// =======================
+
+let map = L.map('map').setView([20, 77], 5);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data © OpenStreetMap'
+}).addTo(map);
+
+let routeControl;
+
+
+// =======================
+// ROUTE FUNCTION
+// =======================
+
+async function showRoute() {
+
+    const start = document.getElementById("start").value;
+    const end = document.getElementById("end").value;
+
+    if (!start || !end) {
+        alert("Enter both locations");
         return;
     }
 
-    // 3. Calculate daily allowance
-    const dailyBudget = totalBudget / totalDays;
-    
-    let destination = "";
-    let info = "";
-    let costEstimate = 0;
+    const s = await geocode(start);
+    const e = await geocode(end);
 
-    // 4. Recommendation Logic
-    if (dailyBudget < 40) {
-        destination = "Hanoi, Vietnam";
-        info = "Incredible street food and rich history for budget travelers.";
-        costEstimate = 30;
-    } else if (dailyBudget < 100) {
-        destination = "Lisbon, Portugal";
-        info = "Beautiful tiles, hills, and great wine at a moderate price.";
-        costEstimate = 75;
-    } else if (dailyBudget < 250) {
-        destination = "Tokyo, Japan";
-        info = "A perfect blend of tradition and future. Amazing sushi!";
-        costEstimate = 180;
-    } else {
-        destination = "Reykjavik, Iceland";
-        info = "Expensive but breathtaking landscapes and the Northern Lights.";
-        costEstimate = 300;
+    if (!s || !e) {
+        alert("Place not found — try bigger city");
+        return;
     }
 
-    // 5. Show the result
-    document.getElementById('destination-name').innerText = destination;
-    document.getElementById('destination-info').innerText = info;
-    document.getElementById('daily-cost').innerText = costEstimate;
-    document.getElementById('result-container').classList.remove('hidden');
+    if (routeControl) {
+        map.removeControl(routeControl);
+    }
+
+    routeControl = L.Routing.control({
+        waypoints: [
+            L.latLng(s.lat, s.lon),
+            L.latLng(e.lat, e.lon)
+        ]
+    }).addTo(map);
+}
+
+
+// =======================
+// GEOCODER
+// =======================
+
+async function geocode(place) {
+
+    const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${place}`
+    );
+
+    const data = await res.json();
+    return data[0];
 }
